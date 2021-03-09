@@ -1,0 +1,13 @@
+Code review
+
+1. Code structure and naming conventions:
+-package name is too generic; no module name ?
+-class name is the opposite of clean code (not proper)
+-the function name is too generic
+-function arguments names are not ok
+-t and s must have meaningful names
+
+2. Implementation:
+-too many 'magic numbers' (hardcoded values)
+-is t limited to {1, 2, 3, 4} or it can > 4 ?
+-there are no validations for t, s, perioada
