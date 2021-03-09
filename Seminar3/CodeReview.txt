@@ -11,3 +11,6 @@ Code review
 -too many 'magic numbers' (hardcoded values)
 -is t limited to {1, 2, 3, 4} or it can > 4 ?
 -there are no validations for t, s, perioada
+
+3.Single responsability & KISS
+-outsource the intermediary operations into new simple functions
