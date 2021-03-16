@@ -14,3 +14,12 @@ Code review
 
 3.Single responsability & KISS
 -outsource the intermediary operations into new simple functions
+
+4. Reduce the complexity of the existing functions - KISS & Single responsability
+-reduce the complexity from the getPriceWithDiscount - repeating pattern
+-remove the switch by refactoring the first case to match the others
+
+5. Single Responsaibility & Dependency inversion(DiP)
+-refactor custom exceptions framework
+- remove the dependency on how we validate the price and the account age
+- remove the dependency on values and operations that are managed by marketing department

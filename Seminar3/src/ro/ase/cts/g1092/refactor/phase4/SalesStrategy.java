@@ -1,4 +1,4 @@
-package ro.ase.cts.g1092.refactor.phase3;
+package ro.ase.cts.g1092.refactor.phase4;
 
 import ro.ase.cts.g1092.refactor.exceptions.InvalidValueException;
 
@@ -13,7 +13,8 @@ public class SalesStrategy {
     }
 
     public static float getPriceWithDiscount(float initialPrice, float discount, float fidelityDiscount){
-        return (initialPrice - (ProductType.DISCOUNTED.getDiscount() * initialPrice)) - fidelityDiscount * (initialPrice - (ProductType.DISCOUNTED.getDiscount() * initialPrice));
+        float initialDiscount = initialPrice - (discount * initialPrice);
+        return initialDiscount * (1-fidelityDiscount);
     }
 
     public float computeFinalPrice(float initialPrice, ProductType productType, int yearsSinceRegistration) throws InvalidValueException {
@@ -22,8 +23,8 @@ public class SalesStrategy {
         }
 
         float finalPrice = 0;
-        float fidelityDiscount = getFidelityDiscount(yearsSinceRegistration);
-
+        float fidelityDiscount = (productType != ProductType.NEW) ? getFidelityDiscount(yearsSinceRegistration) : 0;
+        finalPrice = getPriceWithDiscount(initialPrice, productType.getDiscount(), fidelityDiscount);
         switch (productType){
             case NEW:
                 finalPrice = initialPrice;
