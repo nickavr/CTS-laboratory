@@ -15,9 +15,9 @@ public class TestSalesStrategy {
         ValidatorService validator = new ValidatorService();
         SalesStrategy sales = new SalesStrategy(mkService, validator);
 
-        float finalPrice = sales.computeFinalPrice(100, ProductType.DISCOUNTED, 5);
+        float finalPrice = sales.computeFinalPrice(ProductType.DISCOUNTED, 100, 5);
         System.out.println("The final price" + finalPrice);
-        sales.setMkStrategy(new MarketingStrategyInterface() {
+        sales.setMarketingStrategyInterface(new MarketingStrategyInterface() {
             @Override
             public float getFidelityDiscount(int yearsSinceRegistration) {
                 return 0.5f;

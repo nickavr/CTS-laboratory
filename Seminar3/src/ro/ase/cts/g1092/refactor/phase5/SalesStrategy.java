@@ -7,58 +7,40 @@ import ro.ase.cts.g1092.refactor.phase5.marketing.MarketingStrategyInterface;
 
 public class SalesStrategy {
 
-    private MarketingStrategyInterface mkStrategy = null;
-    private SalesValidatorsInterface validator = null;
+    private MarketingStrategyInterface marketingStrategyInterface;
+    private SalesValidatorsInterface validator;
 
-    public SalesStrategy(MarketingStrategyInterface mkStrategy, SalesValidatorsInterface validator) {
-        if(mkStrategy == null | validator == null){
+    public SalesStrategy(MarketingStrategyInterface marketingStrategyInterface, SalesValidatorsInterface validator) {
+        if(marketingStrategyInterface == null || validator == null) {
             throw new NullPointerException();
         }
-        this.mkStrategy = mkStrategy;
+        this.marketingStrategyInterface = marketingStrategyInterface;
         this.validator = validator;
     }
-    //optional (depends on design specs): allowing the change at runtime of mk strategy
 
-
-    public void setMkStrategy(MarketingStrategyInterface mkStrategy) {
-        if(mkStrategy == null){
+    //Optional: Allowing the change at runtime of the marketing strategy. Depends on your design specs
+    public void setMarketingStrategyInterface(MarketingStrategyInterface marketingStrategyInterface) {
+        if(marketingStrategyInterface == null) {
             throw new NullPointerException();
         }
-        this.mkStrategy = mkStrategy;
+        this.marketingStrategyInterface = marketingStrategyInterface;
     }
 
-    public static float getPriceWithDiscount(float initialPrice, float discount, float fidelityDiscount){
+    public static float getPriceWithDiscount(float initialPrice, float discount, float fidelityDiscount) {
         float initialDiscount = initialPrice - (discount * initialPrice);
-        return initialDiscount * (1-fidelityDiscount);
+        return initialDiscount * ( 1 - fidelityDiscount);
     }
 
-    public float computeFinalPrice(float initialPrice, ProductType productType, int yearsSinceRegistration) throws InvalidValueException, InvalidPriceException, InvalidYearsSinceRegistrationException {
-
-
-        float finalPrice = 0;
-        float fidelityDiscount = (productType != ProductType.NEW) ? mkStrategy.getFidelityDiscount(yearsSinceRegistration) : 0;
-        finalPrice = getPriceWithDiscount(initialPrice, productType.getDiscount(), fidelityDiscount);
+    public float computeFinalPrice(ProductType productType, float initialPrice, int yearsSinceRegistration) throws InvalidPriceException, InvalidYearsSinceRegistrationException {
 
         validator.validatePrice(initialPrice);
         validator.validateYearsSinceRegistration(yearsSinceRegistration);
 
-        switch (productType){
-            case NEW:
-                finalPrice = initialPrice;
-                break;
-            case DISCOUNTED:
-                finalPrice = computeFinalPrice(initialPrice, ProductType.DISCOUNTED, yearsSinceRegistration);
-                break;
-            case LIMITED_STOCK:
-                finalPrice = computeFinalPrice(initialPrice, ProductType.LIMITED_STOCK, yearsSinceRegistration);
-                break;
-            case LEGACY:
-                finalPrice = computeFinalPrice(initialPrice, ProductType.LEGACY, yearsSinceRegistration);
-                break;
-            default:
-                throw new UnsupportedOperationException("Type not managed");
-        }
+        float fidelityDiscount =
+                (productType != ProductType.NEW) ?  marketingStrategyInterface.getFidelityDiscount(yearsSinceRegistration) : 0;
 
-        return finalPrice;
+        return getPriceWithDiscount(initialPrice, productType.getDiscount(),fidelityDiscount);
+
     }
+
 }
