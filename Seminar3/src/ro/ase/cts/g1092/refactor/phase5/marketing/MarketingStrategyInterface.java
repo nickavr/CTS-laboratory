@@ -4,7 +4,5 @@ public interface MarketingStrategyInterface {
     public static final int FIDELITY_YEARS_THRESHOLD = 10;
     public static final float MAX_FIDELITY_DISCOUNT = 0.15f;
 
-    public static float getFidelityDiscount(int yearsSinceRegistration) {
-        return 0;
-    }
+    public float getFidelityDiscount(int yearsSinceRegistration);
 }
