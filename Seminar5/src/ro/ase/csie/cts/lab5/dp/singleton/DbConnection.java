@@ -33,10 +33,22 @@ public class DbConnection {
     }
 
     //the method used to return the ref to the unique object
+    //is using default settings values
     public static DbConnection getDbConnection(){
         if(DbConnection.dbConnection == null) {
             //you can get details rom files or do other operations
             dbConnection = new DbConnection();
+        }
+        return DbConnection.dbConnection;
+    }
+
+    public static DbConnection getDbConnection(String socket, String schema){
+        if(DbConnection.dbConnection == null){
+            dbConnection = new DbConnection(socket, schema);
+        }
+        //optional - throw an error if they try to open a conn to another db
+        if(!socket.equals(dbConnection.socket) || !schema.equals(dbConnection.schema)){
+            throw new UnsupportedOperationException("You already have a connection to a diff db");
         }
         return DbConnection.dbConnection;
     }
